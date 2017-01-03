@@ -43,7 +43,7 @@ controller.hears(['(.*) was recently added to Plex.'], 'ambient,bot_message', fu
             if (team_data) {
                 client.messages.create({
                     to: phones[team_data.user],
-                    from: "+19196801691",
+                    from: phones[team_data.slackbot],
                     body: team_data.id+" is ready for you to watch.",
                 }, function(err, message) {
                     console.log(message.sid);
