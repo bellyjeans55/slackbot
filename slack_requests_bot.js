@@ -43,7 +43,7 @@ controller.hears(['(.*) was recently added to Plex.'], 'ambient,bot_message', fu
             if (team_data) {
                 client.messages.create({
                     to: phones[team_data.user],
-                    from: phones[team_data.slackbot],
+                    from: "+19196801691",
                     body: team_data.id+" is ready for you to watch.",
                 }, function(err, message) {
                     console.log(message.sid);
@@ -62,6 +62,14 @@ controller.on('ambient,bot_message',function(bot,message) {
         matches = re_request.exec(message.text);
         movie = matches[1];
         requester = matches[2];
+
+        //quick and dirty fix for those damn users who use email addresses
+        re_email = new RegExp("<mailto:(.*)\|");
+        if (re_email.test(requester)) {
+          requester = requester.split("|")[0];
+          requester = re_email.exec(requester)[1];
+        }
+
         controller.storage.teams.save({id: movie, user:requester},function(err){});
     }
     else if (re_added.test(message.text)) {
